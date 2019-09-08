@@ -7,10 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <title>{{ config('app.name', 'Laravel') }}</title> 
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,6 +15,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('css')
+
+    <style>
+        .btn-info {
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -72,9 +76,45 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        @if(!in_array(request()->path(), ['login', 'regiister', 'password/email', 'password/reset']))
+            <main class=" container py-4">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        @auth
+                            <a href="{{ route('discussions.create') }}" style="width: 100%" class="btn btn-info my-2">Add Discussion</a>
+                        @else
+                            <a href="{{ route('login') }}"  style="width: 100%" class="btn btn-info my-2">Sign in to add Discussion</a>
+                        @endauth
+                        <div class="card">
+                            <div class="card-header">
+                                Channels
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    @foreach($channels as $channel)
+                                        <li class="list-group-item">{{ $channel->name }}</li>
+                                    @endforeach
+                                </ul>   
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="col-md-8">@yield('content')</div>
+                </div>
+                    
+            </main>
+        @else
+            <main class="py-4">
+                @yield('content')
+            </main>
+        @endif
+
     </div>
+
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    @yield('js')
 </body>
 </html>

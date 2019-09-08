@@ -2,8 +2,10 @@
 
 namespace Forum\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+use Forum\Channel;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // View::share('channels', Channel::all());
+        View::share('channels', Channel::all());
     }
 }
